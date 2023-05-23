@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 
 function Login() {
     const [inputField,setInputField] = useState({
@@ -7,6 +9,7 @@ function Login() {
         password:"",
        
     })
+    const BASE_API_URL =process.env.REACT_APP_PRO_MODE
 
 const [errorField,setErrorField] = useState({
    
@@ -60,10 +63,23 @@ const formValidation=()=>{
 
 }
 
-const submitHandler=(event)=>{
+const submitHandler=async (event)=>{
     event.preventDefault();
     console.log(">>>>>>>",inputField)
-    formValidation()
+    try{
+        if( formValidation()){
+            const response = await axios.post(`${BASE_API_URL}/user/login`,inputField)
+            console.log(">>>res>",response)
+            toast.success(response.data.message)
+     }
+    }
+    catch(error){
+        console.log(error)
+        console.log(error.response.data.message)
+        toast.error(error.response.data.message)
+    }
+    
+   
 }
 
     return (
@@ -97,9 +113,11 @@ const submitHandler=(event)=>{
                 </div>
                 
                 
-                <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
+                <button type="submit" className="btn btn-primary" onClick={submitHandler}>Login</button>
                 <p>create New account?<Link to='/signup'>Signup</Link> here</p>
                 </div>
+
+                <ToastContainer/>
         </>
     )
 }

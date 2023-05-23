@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {useNavigate, Link } from "react-router-dom";
+import axios from 'axios'
 
 function Signup() {
     const [inputField,setInputField] = useState({
@@ -18,7 +19,9 @@ const [errorField,setErrorField] = useState({
     errAddress:""
 })
 
-console.log(">>>>>>>>>>>>>>>>",process.env.REACT_APP_PRO_MODE)
+
+
+const BASE_API_URL =process.env.REACT_APP_PRO_MODE
 
 const inputChangeHandler=(event)=>{
     setInputField({...inputField,[event.target.name]:event.target.value})
@@ -71,12 +74,15 @@ const formValidation=()=>{
 
 }
 
-const submitHandler=(event)=>{
+const submitHandler= async (event)=>{
     event.preventDefault();
     console.log(">>>>>>>",inputField)
     
     if(formValidation()){
         navigate('/login')
+
+        const response = await axios.post(`${BASE_API_URL}/user/signup`,inputField);
+           console.log(">>>response>>>>",response)
     }
    
 }
@@ -133,7 +139,7 @@ const submitHandler=(event)=>{
                         
                 </div>
                 
-                <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
+                <button type="submit" className="btn btn-primary" onClick={submitHandler}>Signup</button>
                 <p>Already have on account?<Link to="/login">Login</Link> here</p>
                 </div>
         </>

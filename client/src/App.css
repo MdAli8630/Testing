@@ -1,0 +1,23 @@
+.center_form{
+  background-color: yellow;
+ 
+}
+
+.form-control {
+  width: 150%;
+}
+.center_form {
+  display: grid;
+    justify-content: center;  /* Align in the center */
+   
+    padding: 20px;
+}
+
+h1.head_singnup {
+  text-align: center;
+  color: blue;
+}
+
+.error{
+  color:red;
+}

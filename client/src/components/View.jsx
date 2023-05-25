@@ -1,6 +1,7 @@
 
 import React,{useEffect, useState} from "react";
 import axios from 'axios'
+import { Link } from "react-router-dom";
 
 
 function View() {
@@ -36,6 +37,9 @@ const BASE_API_URL = process.env.REACT_APP_PRO_MODE;
         <>
 
             <table className="table">
+
+
+
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
@@ -55,9 +59,9 @@ const BASE_API_URL = process.env.REACT_APP_PRO_MODE;
                             <td>{item.address}</td>
                             <td>
          
-                            {/* <Link to={`/edit/${item._id}`}> */}
-                                             <button className='btn btn-edit btn-outline-primary m-2'>Edit</button>
-                                         {/* </Link> */}
+                            <Link to={`/edit/${item._id}`}>
+                                     <button className='btn btn-edit btn-outline-primary m-2'>Edit</button>
+                                </Link>
                                          <button className='btn btn-delete btn-danger m-2' 
                                        onClick={()=>onDeleteUser(item._id)}
                                           >Delete</button>

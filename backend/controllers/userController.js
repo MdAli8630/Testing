@@ -1,5 +1,6 @@
 const userModel= require("../models/user")
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 const create_signup = async(req,res)=>{
     const {name,email,password,address} = req.body;
@@ -34,6 +35,14 @@ const create_login = async (req,res)=>{
           }
 
           const matchPassword = await bcrypt.compare(password,existUser.password)
+
+            const token =await existUser.generateAuthToken();
+            console.log(token)
+            res.cookie("jwtoken",token, {
+                expire: new Date(Date.now() + 25892000000),
+                httpOnly:true
+            });
+
           if(!matchPassword){
              return res.status(422).json({success:false,message:"Invalid Password"})
           }
@@ -50,6 +59,17 @@ const create_login = async (req,res)=>{
 const fetch_all_user = async (req,res)=>{
     try{
         const  data = await userModel.find({});
+         res.status(201).json({success:true, data:data})
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({success: false, message:"Something went wrong"})
+    }
+}
+
+const fetch_signle_user = async (req,res)=>{
+    try{
+        const  data = await userModel.findOne({_id:req.params.id});
          res.status(201).json({success:true, data:data})
     }
     catch(error){
@@ -98,4 +118,4 @@ const delete_user = async (req,res)=>{
 
 
 
-module.exports={create_signup,create_login,fetch_all_user,update_user,delete_user}
+module.exports={create_signup,create_login,fetch_all_user,update_user,delete_user,fetch_signle_user}

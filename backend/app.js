@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const UserRouter = require('./routes/userRoute');
@@ -22,7 +23,8 @@ app.use(cors({
 
 app.use(express.json())
 
-app.get("/",(req,res)=>{
+app.get("/contact",(req,res)=>{
+  res.cookie("Test","ali")
     res.send("Hello World")
 });
 

@@ -3,6 +3,8 @@ require('dotenv').config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const UserRouter = require('./routes/userRoute');
+const cookieParser = require('cookie-parser');
+const { ConnectionStates } = require('mongoose');
 require("./database/dbConnection")
 
 const app = express();
@@ -10,11 +12,15 @@ const app = express();
 
 const PORT = process.env.PORT || 8080
 
-app.use(cors({
-    origin: '*'
-  }));
+app.use(cookieParser())
+
+// app.use(cors({
+//     origin: '*'
+//   }));
   app.use(cors({
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+    origin:["http://localhost:3000"],
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
+    credentials:true,
   }));
 
 

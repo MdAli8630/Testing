@@ -1,5 +1,12 @@
+
+/* .App {
+  text-align: center;
+  padding-left: 350px;
+  padding-top: 50px;
+} */
+
 .center_form{
-  background-color: yellow;
+  background-color: rgb(206, 203, 233);
  
 }
 
@@ -9,7 +16,7 @@
 .center_form {
   display: grid;
     justify-content: center;  /* Align in the center */
-   
+    /* width: 600px; */
     padding: 20px;
 }
 

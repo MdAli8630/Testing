@@ -28,6 +28,8 @@ const create_signup = async(req,res)=>{
 const create_login = async (req,res)=>{
     const {email,password} = req.body;
 
+   // res.cookie("Kasim")
+
     try{
         const existUser = await userModel.findOne({email:email})
           if(!existUser){
@@ -38,10 +40,18 @@ const create_login = async (req,res)=>{
 
             const token =await existUser.generateAuthToken();
             console.log(token)
-            res.cookie("jwtoken",token, {
-                expire: new Date(Date.now() + 25892000000),
-                httpOnly:true
-            });
+            res.cookie("jwtoken",token
+            // ,{
+            //     expires: new Date(Date.now() + 25892000000),
+            //    // secure:true,
+            //     httpOnly: true
+            // }
+            );
+
+            //res.cookie("jwt",token)
+           // console.log(cookie)
+
+   
 
           if(!matchPassword){
              return res.status(422).json({success:false,message:"Invalid Password"})
@@ -113,7 +123,6 @@ const delete_user = async (req,res)=>{
         res.status(500).json({success: false, message:"Something went wrong"})
     }
 }
-
 
 
 

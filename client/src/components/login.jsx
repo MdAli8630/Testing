@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -18,6 +18,9 @@ const [errorField,setErrorField] = useState({
    
 })
 
+
+
+const navigate = useNavigate()
 
 const inputChangeHandler=(event)=>{
     setInputField({...inputField,[event.target.name]:event.target.value})
@@ -68,15 +71,34 @@ const submitHandler=async (event)=>{
     console.log(">>>>>>>",inputField)
     try{
         if( formValidation()){
-            const response = await axios.post(`${BASE_API_URL}/user/login`,inputField)
+            const response = await axios.post(`${BASE_API_URL}/user/login`,inputField,{
+                withCredentials:true
+            })
+        //    const response1 = await fetch(`${BASE_API_URL}/user/login`,{
+        //         method:'POST',
+        //         headers:{
+        //             "Content-Type":"application/json"
+        //         },
+        //         body:JSON.stringify(inputField)
+        //    })
+
+        //    const response =await response1.json()
             console.log(">>>res>",response)
-            toast.success(response.data.message)
+            if(response.status===201){
+                toast.success(response.data.message)
+
+                setTimeout(()=>{
+                    navigate('/view');
+                })
+                
+            }
+           
      }
     }
     catch(error){
         console.log(error)
-        console.log(error.response.data.message)
-        toast.error(error.response.data.message)
+        console.log(error?.response?.data?.message)
+        toast.error(error?.response?.data?.message)
     }
     
    
@@ -87,7 +109,7 @@ const submitHandler=async (event)=>{
 
            <div className="center_form">
             <h1 className="head_singnup">Login</h1>
-           
+           <form method="POST">
                 <div className="mb-3 input_form">
                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="exampleInputEmail1" 
@@ -115,6 +137,7 @@ const submitHandler=async (event)=>{
                 
                 <button type="submit" className="btn btn-primary" onClick={submitHandler}>Login</button>
                 <p>create New account?<Link to='/signup'>Signup</Link> here</p>
+                </form>
                 </div>
 
                 <ToastContainer/>
